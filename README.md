@@ -69,7 +69,7 @@ EXPO_PUBLIC_HUGGING_FACE_TOKEN=<>
 - **NativeWind** - Tailwind CSS for React Native
 - **@expo/vector-icons** - Material Community Icons
 
-### AI & Machine Learning
+### AI 
 
 - **@huggingface/inference** - Official Hugging Face client library
 - **Hugging Face Models**:
@@ -93,6 +93,10 @@ EXPO_PUBLIC_HUGGING_FACE_TOKEN=<>
 7. Saved to AsyncStorage via `StorageService`
 8. Results displayed in modal
 9. Input cleared for next entry
+
+## Usage of AI in Development
+
+This project was developed with assistance from **Claude Sonnet 4.5** AI assistant integrated within **Visual Studio Code**. The core logic and idea was developed by myself. **%80 of the UI was implemented by AI**. 
 
 ## Getting Started
 
