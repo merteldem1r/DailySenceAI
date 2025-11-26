@@ -1,12 +1,52 @@
+import { StorageService } from "@/services/storage";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { ScrollView, View } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
+import { useCallback, useState } from "react";
+import { ActivityIndicator, ScrollView, View } from "react-native";
 import { Avatar, Card, Divider, Surface, Text } from "react-native-paper";
 
 export default function ProfileScreen() {
-  // Static data - will be enhanced in Step 6
+  const [statistics, setStatistics] = useState({
+    totalEntries: 0,
+    positive: 0,
+    negative: 0,
+    neutral: 0,
+  });
+  const [loading, setLoading] = useState(true);
+
+  const loadStatistics = async () => {
+    setLoading(true);
+    try {
+      const stats = await StorageService.getStatistics();
+      setStatistics(stats);
+    } catch (error) {
+      console.error("Failed to load statistics:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      loadStatistics();
+    }, [])
+  );
+
   const userName = "DailyUser";
   const userEmail = "user@dailysense.ai";
-  const totalEntries = 0;
+
+  if (loading) {
+    return (
+      <Surface className="flex-1 bg-dark-bg" style={{ backgroundColor: "#0f0f0f" }}>
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+          <ActivityIndicator size="large" color="#7c3aed" />
+          <Text variant="bodyMedium" className="text-gray-400 mt-4">
+            Loading statistics...
+          </Text>
+        </View>
+      </Surface>
+    );
+  }
 
   return (
     <Surface className="flex-1 bg-dark-bg" style={{ backgroundColor: "#0f0f0f" }}>
@@ -52,7 +92,7 @@ export default function ProfileScreen() {
                   <MaterialCommunityIcons name="text-box-outline" size={28} color="#7c3aed" />
                 </View>
                 <Text variant="headlineSmall" className="text-white font-bold">
-                  {totalEntries}
+                  {statistics.totalEntries}
                 </Text>
                 <Text variant="bodySmall" className="text-gray-400">
                   Entries
@@ -73,7 +113,7 @@ export default function ProfileScreen() {
                   <MaterialCommunityIcons name="emoticon-happy-outline" size={28} color="#22c55e" />
                 </View>
                 <Text variant="headlineSmall" className="text-white font-bold">
-                  0
+                  {statistics.positive}
                 </Text>
                 <Text variant="bodySmall" className="text-gray-400">
                   Positive
@@ -91,13 +131,34 @@ export default function ProfileScreen() {
                     justifyContent: "center",
                   }}
                 >
-                  <MaterialCommunityIcons name="fire" size={28} color="#f97316" />
+                  <MaterialCommunityIcons name="emoticon-neutral-outline" size={28} color="#f97316" />
                 </View>
                 <Text variant="headlineSmall" className="text-white font-bold">
-                  0
+                  {statistics.neutral}
                 </Text>
                 <Text variant="bodySmall" className="text-gray-400">
-                  Streak
+                  Neutral
+                </Text>
+              </View>
+
+              <View style={{ gap: 8, alignItems: "center" }}>
+                <View
+                  style={{
+                    width: 56,
+                    height: 56,
+                    borderRadius: 28,
+                    backgroundColor: "rgba(239, 68, 68, 0.2)",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <MaterialCommunityIcons name="emoticon-sad-outline" size={28} color="#ef4444" />
+                </View>
+                <Text variant="headlineSmall" className="text-white font-bold">
+                  {statistics.negative}
+                </Text>
+                <Text variant="bodySmall" className="text-gray-400">
+                  Negative
                 </Text>
               </View>
             </View>

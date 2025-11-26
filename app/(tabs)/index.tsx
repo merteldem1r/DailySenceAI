@@ -1,4 +1,7 @@
 import InputCard from "@/components/home/InputCard";
+import ResultModal from "@/components/home/ResultModal";
+import { useAnalyze } from "@/hooks/useAnalyze";
+import { Entry } from "@/types";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useState } from "react";
 import { ScrollView, View } from "react-native";
@@ -6,16 +9,31 @@ import { Card, Surface, Text } from "react-native-paper";
 
 export default function HomeScreen() {
   const [inputText, setInputText] = useState("");
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [resultEntry, setResultEntry] = useState<Entry | null>(null);
+  const [modalVisible, setModalVisible] = useState(false);
 
-  const handleAnalyze = () => {
-    // Will be implemented in Step 4
-    setIsAnalyzing(true);
-    setTimeout(() => setIsAnalyzing(false), 1000);
+  const { isAnalyzing, error, analyzeText } = useAnalyze();
+
+  const handleAnalyze = async () => {
+    const entry = await analyzeText(inputText);
+    
+    if (entry) {
+      // Show modal with results
+      setResultEntry(entry);
+      setModalVisible(true);
+      
+      // Clear input text after successful analysis
+      setInputText("");
+    }
+  };
+
+  const handleModalDismiss = () => {
+    setModalVisible(false);
+    setResultEntry(null);
   };
 
   return (
-    <Surface className="flex-1 bg-dark-bg">
+    <Surface className="flex-1 bg-dark-bg" style={{ backgroundColor: "#0f0f0f" }}>
       <ScrollView
         className="flex-1"
         contentContainerStyle={{ padding: 20, paddingBottom: 40, minHeight: "100%" }}
@@ -42,6 +60,7 @@ export default function HomeScreen() {
           onInputChange={setInputText}
           onAnalyze={handleAnalyze}
           isAnalyzing={isAnalyzing}
+          error={error}
         />
 
         {/* Quick Tip Card */}
@@ -60,6 +79,13 @@ export default function HomeScreen() {
           </Card.Content>
         </Card>
       </ScrollView>
+
+      {/* Result Modal */}
+      <ResultModal
+        visible={modalVisible}
+        onDismiss={handleModalDismiss}
+        entry={resultEntry}
+      />
     </Surface>
   );
 }

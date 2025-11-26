@@ -7,12 +7,17 @@ interface InputCardProps {
   onInputChange: (text: string) => void;
   onAnalyze: () => void;
   isAnalyzing: boolean;
+  error?: string | null;
 }
 
-export default function InputCard({ inputText, onInputChange, onAnalyze, isAnalyzing }: InputCardProps) {
+export default function InputCard({ inputText, onInputChange, onAnalyze, isAnalyzing, error }: InputCardProps) {
+  const MIN_CHARS = 20;
+  const isValid = inputText.trim().length >= MIN_CHARS;
+  const charCount = inputText.length;
+
   return (
     <Card className="bg-dark-card" mode="elevated" elevation={5} style={{ marginBottom: 20 }}>
-      <Card.Content style={{ gap: 16 }}>
+      <Card.Content style={{ gap: 8 }}>
         {/* Label Section */}
         <View className="flex-row items-center justify-between">
           <View className="flex-row items-center" style={{ gap: 8 }}>
@@ -21,8 +26,14 @@ export default function InputCard({ inputText, onInputChange, onAnalyze, isAnaly
               Today's Entry
             </Text>
           </View>
-          <Chip className="bg-dark-bg" textStyle={{ color: "#9ca3af", fontSize: 11 }}>
-            {inputText.length} chars
+          <Chip 
+            className="bg-dark-bg" 
+            textStyle={{ 
+              color: isValid ? "#a78bfa" : "#f97316", 
+              fontSize: 11 
+            }}
+          >
+            {charCount}/{MIN_CHARS} chars
           </Chip>
         </View>
 
@@ -42,14 +53,24 @@ export default function InputCard({ inputText, onInputChange, onAnalyze, isAnaly
           placeholderTextColor="#6b7280"
         />
 
+        {/* Error Message */}
+        {error && (
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+            <MaterialCommunityIcons name="alert-circle" size={16} color="#ef4444" />
+            <Text variant="bodySmall" style={{ color: "#ef4444", flex: 1 }}>
+              {error}
+            </Text>
+          </View>
+        )}
+
         {/* Analyze Button */}
         <Button
           mode="contained"
           onPress={onAnalyze}
           loading={isAnalyzing}
-          disabled={!inputText.trim() || isAnalyzing}
+          disabled={!isValid || isAnalyzing}
           className="rounded-xl"
-          buttonColor={!inputText.trim() || isAnalyzing ? "#374151" : "#7c3aed"}
+          buttonColor={!isValid || isAnalyzing ? "#374151" : "#7c3aed"}
           contentStyle={{ paddingVertical: 8 }}
           icon={() => (
             <MaterialCommunityIcons name={isAnalyzing ? "loading" : "star-four-points"} size={20} color="white" />
