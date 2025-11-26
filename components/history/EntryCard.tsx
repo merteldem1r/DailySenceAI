@@ -1,4 +1,5 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useState } from "react";
 import { View } from "react-native";
 import { Card, Chip, IconButton, Text } from "react-native-paper";
 
@@ -37,16 +38,27 @@ const sentimentConfig = {
   },
 };
 
-export default function EntryCard({ id, text, sentiment, sentimentScore, summary, suggestion, date, onDelete }: EntryCardProps) {
+export default function EntryCard({
+  id,
+  text,
+  sentiment,
+  sentimentScore,
+  summary,
+  suggestion,
+  date,
+  onDelete,
+}: EntryCardProps) {
   const config = sentimentConfig[sentiment];
   const scorePercentage = Math.round(sentimentScore * 100);
+  const [summaryExpanded, setSummaryExpanded] = useState(false);
+  const [suggestionExpanded, setSuggestionExpanded] = useState(false);
 
   return (
     <Card
       className="bg-dark-card"
       mode="elevated"
       elevation={3}
-      style={{ marginBottom: 16, position: "relative", paddingBottom: 30 }}
+      style={{ marginBottom: 16, position: "relative", paddingBottom: 35 }}
     >
       <Card.Content style={{ gap: 12 }}>
         {/* Header with Date and Sentiment */}
@@ -69,27 +81,8 @@ export default function EntryCard({ id, text, sentiment, sentimentScore, summary
               textStyle={{ color: config.color, fontSize: 12, fontWeight: "600" }}
               icon={() => <MaterialCommunityIcons name={config.icon} size={16} color={config.color} />}
             >
-              {config.label}
+              {config.label} %{scorePercentage}
             </Chip>
-            <View
-              style={{
-                backgroundColor: config.bgColor,
-                paddingHorizontal: 8,
-                paddingVertical: 4,
-                borderRadius: 6,
-              }}
-            >
-              <Text
-                variant="labelSmall"
-                style={{
-                  color: config.color,
-                  fontSize: 11,
-                  fontWeight: "700",
-                }}
-              >
-                {scorePercentage}%
-              </Text>
-            </View>
           </View>
         </View>
 
@@ -110,42 +103,84 @@ export default function EntryCard({ id, text, sentiment, sentimentScore, summary
 
         {/* AI Analysis Section */}
         <View style={{ gap: 8 }}>
-          {/* Summary */}
+          {/* Summary Accordion */}
           <View
             style={{
-              flexDirection: "row",
-              gap: 8,
-              alignItems: "flex-start",
+              backgroundColor: "rgba(167, 139, 250, 0.1)",
+              borderRadius: 8,
+              borderWidth: 1,
+              borderColor: "rgba(167, 139, 250, 0.2)",
+              overflow: "hidden",
             }}
           >
-            <MaterialCommunityIcons name="lightbulb-outline" size={18} color="#a78bfa" style={{ marginTop: 2 }} />
-            <View style={{ flex: 1 }}>
-              <Text variant="labelSmall" className="text-accent font-semibold mb-1">
-                AI Summary
-              </Text>
-              <Text variant="bodySmall" className="text-gray-300 leading-5">
-                {summary}
-              </Text>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                padding: 12,
+              }}
+              onTouchEnd={() => setSummaryExpanded(!summaryExpanded)}
+            >
+              <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+                <MaterialCommunityIcons name="lightbulb-outline" size={18} color="#a78bfa" />
+                <Text variant="labelSmall" style={{ color: "#a78bfa", fontWeight: "600" }}>
+                  AI Summary
+                </Text>
+              </View>
+              <MaterialCommunityIcons
+                name={summaryExpanded ? "chevron-up" : "chevron-down"}
+                size={20}
+                color="#a78bfa"
+              />
             </View>
+            {summaryExpanded && (
+              <View style={{ paddingHorizontal: 12, paddingBottom: 12 }}>
+                <Text variant="bodySmall" style={{ color: "#d1d5db", lineHeight: 20 }}>
+                  {summary}
+                </Text>
+              </View>
+            )}
           </View>
 
-          {/* Suggestion */}
+          {/* Suggestion Accordion */}
           <View
             style={{
-              flexDirection: "row",
-              gap: 8,
-              alignItems: "flex-start",
+              backgroundColor: "rgba(167, 139, 250, 0.1)",
+              borderRadius: 8,
+              borderWidth: 1,
+              borderColor: "rgba(167, 139, 250, 0.2)",
+              overflow: "hidden",
             }}
           >
-            <MaterialCommunityIcons name="head-lightbulb-outline" size={18} color="#a78bfa" style={{ marginTop: 2 }} />
-            <View style={{ flex: 1 }}>
-              <Text variant="labelSmall" className="text-accent font-semibold mb-1">
-                Suggestion
-              </Text>
-              <Text variant="bodySmall" className="text-gray-300 leading-5">
-                {suggestion}
-              </Text>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                padding: 12,
+              }}
+              onTouchEnd={() => setSuggestionExpanded(!suggestionExpanded)}
+            >
+              <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+                <MaterialCommunityIcons name="head-lightbulb-outline" size={18} color="#a78bfa" />
+                <Text variant="labelSmall" style={{ color: "#a78bfa", fontWeight: "600" }}>
+                  Suggestion
+                </Text>
+              </View>
+              <MaterialCommunityIcons
+                name={suggestionExpanded ? "chevron-up" : "chevron-down"}
+                size={20}
+                color="#a78bfa"
+              />
             </View>
+            {suggestionExpanded && (
+              <View style={{ paddingHorizontal: 12, paddingBottom: 12 }}>
+                <Text variant="bodySmall" style={{ color: "#d1d5db", lineHeight: 20 }}>
+                  {suggestion}
+                </Text>
+              </View>
+            )}
           </View>
         </View>
       </Card.Content>
@@ -158,7 +193,7 @@ export default function EntryCard({ id, text, sentiment, sentimentScore, summary
           iconColor="#ef4444"
           style={{
             position: "absolute",
-            bottom: -20,
+            bottom: -25,
             right: 12,
             margin: 0,
           }}

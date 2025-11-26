@@ -42,12 +42,13 @@ export default function HomeScreen() {
         {/* Header Section */}
         <Card className="bg-dark-card" mode="elevated" elevation={3} style={{ marginBottom: 24 }}>
           <Card.Content className="items-center py-6">
-            <View className="w-16 h-16 bg-primary rounded-full items-center justify-center mb-4">
-              <MaterialCommunityIcons name="brain" size={32} color="white" />
+            <View style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 8 }}>
+              <MaterialCommunityIcons name="brain" size={32} color="#a78bfa" />
+              <Text variant="headlineMedium" className="text-white font-bold text-center mb-2">
+                Daily Check-in
+              </Text>
             </View>
-            <Text variant="headlineMedium" className="text-white font-bold text-center mb-2">
-              Daily Check-in
-            </Text>
+
             <Text variant="bodyMedium" className="text-gray-400 text-center leading-6">
               Share your thoughts and emotions. Our AI will analyze your mood and provide personalized insights.
             </Text>
@@ -66,7 +67,7 @@ export default function HomeScreen() {
         {/* Quick Tip Card */}
         <Card className="bg-dark-card/60" mode="outlined">
           <Card.Content>
-            <View className="flex-row items-center mb-3">
+            <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 12, gap: 8 }}>
               <MaterialCommunityIcons name="lightbulb-outline" size={20} color="#a78bfa" />
               <Text variant="titleSmall" className="text-accent ml-2 font-semibold">
                 Quick Tip
