@@ -6,6 +6,9 @@
 
 ## App Preview
 
+![2](https://github.com/user-attachments/assets/81fcd65e-a29e-4653-ac50-a5dc6db6abb7)
+![3](https://github.com/user-attachments/assets/3f96a1bd-54c8-4d5a-9c2d-5088fb424c85)
+
 ## Key Features
 
 ### Home Screen - Daily Check-in
