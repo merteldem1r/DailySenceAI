@@ -16,12 +16,12 @@ export default function HomeScreen() {
 
   const handleAnalyze = async () => {
     const entry = await analyzeText(inputText);
-    
+
     if (entry) {
       // Show modal with results
       setResultEntry(entry);
       setModalVisible(true);
-      
+
       // Clear input text after successful analysis
       setInputText("");
     }
@@ -73,19 +73,14 @@ export default function HomeScreen() {
               </Text>
             </View>
             <Text variant="bodySmall" className="text-gray-400 leading-5">
-              Be honest and detailed about your feelings. The more context you provide, the better insights you'll
-              receive.
+              Be honest, the more context you provide, the better insights you'll receive.
             </Text>
           </Card.Content>
         </Card>
       </ScrollView>
 
       {/* Result Modal */}
-      <ResultModal
-        visible={modalVisible}
-        onDismiss={handleModalDismiss}
-        entry={resultEntry}
-      />
+      <ResultModal visible={modalVisible} onDismiss={handleModalDismiss} entry={resultEntry} />
     </Surface>
   );
 }

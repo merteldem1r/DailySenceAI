@@ -75,7 +75,7 @@ export default function HistoryScreen() {
   );
 
   return (
-    <Surface className="flex-1 bg-dark-bg" style={{ backgroundColor: "#0f0f0f", minHeight: "100%" }}>
+    <Surface className="flex-1 bg-dark-bg" style={{ backgroundColor: "#0f0f0f", minHeight: "100%", marginBottom: 200 }}>
       {loading && (
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#0f0f0f" }}>
           <ActivityIndicator size="large" color="#7c3aed" />
@@ -111,7 +111,7 @@ export default function HistoryScreen() {
       {!loading && entries.length !== 0 && (
         <>
           {entries.length > 0 && (
-            <View style={{ padding: 20, paddingBottom: 12 }}>
+            <View style={{ padding: 20, paddingBottom: 12, marginBottom: 5 }}>
               <Button
                 mode="outlined"
                 onPress={handleClearAll}
@@ -137,6 +137,7 @@ export default function HistoryScreen() {
                 id={item.id}
                 text={item.text}
                 sentiment={item.sentiment}
+                sentimentScore={item.sentimentScore}
                 summary={item.summary}
                 suggestion={item.suggestion}
                 date={item.date}

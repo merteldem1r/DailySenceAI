@@ -11,10 +11,6 @@ interface UseAnalyzeResult {
   analyzeText: (text: string) => Promise<Entry | null>;
 }
 
-/**
- * Custom hook for analyzing text with AI and saving to storage
- * Handles loading states, error handling, and AsyncStorage persistence
- */
 export const useAnalyze = (): UseAnalyzeResult => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -45,6 +41,7 @@ export const useAnalyze = (): UseAnalyzeResult => {
         id: generateId(),
         text: text.trim(),
         sentiment: aiResult.sentiment,
+        sentimentScore: aiResult.sentimentScore,
         summary: aiResult.summary,
         suggestion: aiResult.suggestion,
         date: formatDate(Date.now()),
@@ -58,10 +55,7 @@ export const useAnalyze = (): UseAnalyzeResult => {
       return entry;
     } catch (err) {
       setIsAnalyzing(false);
-      const errorMessage =
-        err instanceof Error
-          ? err.message
-          : "Failed to analyze text. Please try again.";
+      const errorMessage = err instanceof Error ? err.message : "Failed to analyze text. Please try again.";
       setError(errorMessage);
       Alert.alert("Analysis Failed", errorMessage);
       return null;

@@ -1,9 +1,9 @@
 import { AIAnalysisResult, Sentiment } from "@/types";
 import { getSentimentTexts } from "@/utils/sentimentTexts";
-import { HfInference } from "@huggingface/inference";
+import { InferenceClient } from "@huggingface/inference";
 
 const HUGGING_FACE_TOKEN = process.env.EXPO_PUBLIC_HUGGING_FACE_TOKEN || "";
-const hf = new HfInference(HUGGING_FACE_TOKEN);
+const hf = new InferenceClient(HUGGING_FACE_TOKEN);
 
 export const AIService = {
   analyzeText: async (text: string): Promise<AIAnalysisResult> => {
@@ -13,6 +13,7 @@ export const AIService = {
 
       return {
         sentiment,
+        sentimentScore: score,
         summary,
         suggestion,
       };

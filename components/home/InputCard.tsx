@@ -1,6 +1,6 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { View } from "react-native";
-import { Button, Card, Chip, Text, TextInput } from "react-native-paper";
+import { Button, Card, Text, TextInput } from "react-native-paper";
 
 interface InputCardProps {
   inputText: string;
@@ -19,22 +19,32 @@ export default function InputCard({ inputText, onInputChange, onAnalyze, isAnaly
     <Card className="bg-dark-card" mode="elevated" elevation={5} style={{ marginBottom: 20 }}>
       <Card.Content style={{ gap: 8 }}>
         {/* Label Section */}
-        <View className="flex-row items-center justify-between">
-          <View className="flex-row items-center" style={{ gap: 8 }}>
+        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+          <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
             <MaterialCommunityIcons name="pencil" size={20} color="#a78bfa" />
             <Text variant="titleMedium" className="text-gray-300 font-semibold">
               Today's Entry
             </Text>
           </View>
-          <Chip 
-            className="bg-dark-bg" 
-            textStyle={{ 
-              color: isValid ? "#a78bfa" : "#f97316", 
-              fontSize: 11 
+          <View
+            style={{
+              backgroundColor: isValid ? "rgba(124, 58, 237, 0.15)" : "rgba(249, 115, 22, 0.15)",
+              paddingHorizontal: 8,
+              paddingVertical: 4,
+              borderRadius: 6,
             }}
           >
-            {charCount}/{MIN_CHARS} chars
-          </Chip>
+            <Text
+              variant="labelSmall"
+              style={{
+                color: isValid ? "#a78bfa" : "#f97316",
+                fontSize: 11,
+                fontWeight: "600",
+              }}
+            >
+              {charCount}/{MIN_CHARS} chars
+            </Text>
+          </View>
         </View>
 
         {/* Text Input */}

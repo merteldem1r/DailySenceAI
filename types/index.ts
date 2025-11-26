@@ -4,6 +4,7 @@ export interface Entry {
   id: string;
   text: string;
   sentiment: Sentiment;
+  sentimentScore: number;
   summary: string;
   suggestion: string;
   date: string;
@@ -12,6 +13,7 @@ export interface Entry {
 
 export interface AIAnalysisResult {
   sentiment: Sentiment;
+  sentimentScore: number;
   summary: string;
   suggestion: string;
 }

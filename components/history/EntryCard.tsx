@@ -6,6 +6,7 @@ interface EntryCardProps {
   id: string;
   text: string;
   sentiment: "positive" | "neutral" | "negative";
+  sentimentScore: number;
   summary: string;
   suggestion: string;
   date: string;
@@ -36,8 +37,9 @@ const sentimentConfig = {
   },
 };
 
-export default function EntryCard({ id, text, sentiment, summary, suggestion, date, onDelete }: EntryCardProps) {
+export default function EntryCard({ id, text, sentiment, sentimentScore, summary, suggestion, date, onDelete }: EntryCardProps) {
   const config = sentimentConfig[sentiment];
+  const scorePercentage = Math.round(sentimentScore * 100);
 
   return (
     <Card
@@ -61,13 +63,34 @@ export default function EntryCard({ id, text, sentiment, summary, suggestion, da
               {date}
             </Text>
           </View>
-          <Chip
-            style={{ backgroundColor: config.bgColor }}
-            textStyle={{ color: config.color, fontSize: 12, fontWeight: "600" }}
-            icon={() => <MaterialCommunityIcons name={config.icon} size={16} color={config.color} />}
-          >
-            {config.label}
-          </Chip>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+            <Chip
+              style={{ backgroundColor: config.bgColor }}
+              textStyle={{ color: config.color, fontSize: 12, fontWeight: "600" }}
+              icon={() => <MaterialCommunityIcons name={config.icon} size={16} color={config.color} />}
+            >
+              {config.label}
+            </Chip>
+            <View
+              style={{
+                backgroundColor: config.bgColor,
+                paddingHorizontal: 8,
+                paddingVertical: 4,
+                borderRadius: 6,
+              }}
+            >
+              <Text
+                variant="labelSmall"
+                style={{
+                  color: config.color,
+                  fontSize: 11,
+                  fontWeight: "700",
+                }}
+              >
+                {scorePercentage}%
+              </Text>
+            </View>
+          </View>
         </View>
 
         {/* User's Entry Text */}
