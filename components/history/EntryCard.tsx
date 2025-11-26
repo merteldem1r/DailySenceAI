@@ -1,6 +1,6 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { View } from "react-native";
-import { Card, Chip, Text } from "react-native-paper";
+import { Card, Chip, IconButton, Text } from "react-native-paper";
 
 interface EntryCardProps {
   id: string;
@@ -9,6 +9,7 @@ interface EntryCardProps {
   summary: string;
   suggestion: string;
   date: string;
+  onDelete?: (id: string) => void;
 }
 
 const sentimentConfig = {
@@ -35,13 +36,7 @@ const sentimentConfig = {
   },
 };
 
-export default function EntryCard({
-  text,
-  sentiment,
-  summary,
-  suggestion,
-  date,
-}: EntryCardProps) {
+export default function EntryCard({ id, text, sentiment, summary, suggestion, date, onDelete }: EntryCardProps) {
   const config = sentimentConfig[sentiment];
 
   return (
@@ -49,7 +44,7 @@ export default function EntryCard({
       className="bg-dark-card"
       mode="elevated"
       elevation={3}
-      style={{ marginBottom: 16 }}
+      style={{ marginBottom: 16, position: "relative", paddingBottom: 30 }}
     >
       <Card.Content style={{ gap: 12 }}>
         {/* Header with Date and Sentiment */}
@@ -61,11 +56,7 @@ export default function EntryCard({
           }}
         >
           <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-            <MaterialCommunityIcons
-              name="calendar-outline"
-              size={16}
-              color="#9ca3af"
-            />
+            <MaterialCommunityIcons name="calendar-outline" size={16} color="#9ca3af" />
             <Text variant="bodySmall" className="text-gray-400">
               {date}
             </Text>
@@ -73,13 +64,7 @@ export default function EntryCard({
           <Chip
             style={{ backgroundColor: config.bgColor }}
             textStyle={{ color: config.color, fontSize: 12, fontWeight: "600" }}
-            icon={() => (
-              <MaterialCommunityIcons
-                name={config.icon}
-                size={16}
-                color={config.color}
-              />
-            )}
+            icon={() => <MaterialCommunityIcons name={config.icon} size={16} color={config.color} />}
           >
             {config.label}
           </Chip>
@@ -110,12 +95,7 @@ export default function EntryCard({
               alignItems: "flex-start",
             }}
           >
-            <MaterialCommunityIcons
-              name="lightbulb-outline"
-              size={18}
-              color="#a78bfa"
-              style={{ marginTop: 2 }}
-            />
+            <MaterialCommunityIcons name="lightbulb-outline" size={18} color="#a78bfa" style={{ marginTop: 2 }} />
             <View style={{ flex: 1 }}>
               <Text variant="labelSmall" className="text-accent font-semibold mb-1">
                 AI Summary
@@ -134,12 +114,7 @@ export default function EntryCard({
               alignItems: "flex-start",
             }}
           >
-            <MaterialCommunityIcons
-              name="head-lightbulb-outline"
-              size={18}
-              color="#a78bfa"
-              style={{ marginTop: 2 }}
-            />
+            <MaterialCommunityIcons name="head-lightbulb-outline" size={18} color="#a78bfa" style={{ marginTop: 2 }} />
             <View style={{ flex: 1 }}>
               <Text variant="labelSmall" className="text-accent font-semibold mb-1">
                 Suggestion
@@ -151,6 +126,22 @@ export default function EntryCard({
           </View>
         </View>
       </Card.Content>
+
+      {/* Delete Button */}
+      {onDelete && (
+        <IconButton
+          icon="delete-outline"
+          size={20}
+          iconColor="#ef4444"
+          style={{
+            position: "absolute",
+            bottom: -20,
+            right: 12,
+            margin: 0,
+          }}
+          onPress={() => onDelete(id)}
+        />
+      )}
     </Card>
   );
 }

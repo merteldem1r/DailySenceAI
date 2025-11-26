@@ -6,6 +6,11 @@ const STORAGE_KEYS = {
   USER_PROFILE: "@dailysense_user_profile",
 } as const;
 
+interface UserProfile {
+  name: string;
+  email: string;
+}
+
 export const StorageService = {
   saveEntry: async (entry: Entry): Promise<void> => {
     try {
@@ -75,6 +80,34 @@ export const StorageService = {
     } catch (error) {
       console.error("Error getting statistics:", error);
       throw new Error("Failed to load statistics. Please try again.");
+    }
+  },
+
+  getUserProfile: async (): Promise<UserProfile> => {
+    try {
+      const stored = await AsyncStorage.getItem(STORAGE_KEYS.USER_PROFILE);
+      if (!stored) {
+        return {
+          name: "DailyUser",
+          email: "user@dailysense.ai",
+        };
+      }
+      return JSON.parse(stored);
+    } catch (error) {
+      console.error("Error getting user profile:", error);
+      return {
+        name: "DailyUser",
+        email: "user@dailysense.ai",
+      };
+    }
+  },
+
+  saveUserProfile: async (profile: UserProfile): Promise<void> => {
+    try {
+      await AsyncStorage.setItem(STORAGE_KEYS.USER_PROFILE, JSON.stringify(profile));
+    } catch (error) {
+      console.error("Error saving user profile:", error);
+      throw new Error("Failed to save profile. Please try again.");
     }
   },
 };
