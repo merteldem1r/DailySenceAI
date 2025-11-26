@@ -51,13 +51,8 @@
 ### Environment Variables
 
 ```env
-EXPO_PUBLIC_TMDB_API_KEY=<your_api_key>
-EXPO_PUBLIC_TMDB_ACCESS_TOKEN=your_access_token![Uploading IMG_2820.PNG…]()
-
+EXPO_PUBLIC_HUGGING_FACE_TOKEN=<>
 ```
-
-Get your credentials from [TMDB](https://www.themoviedb.org/settings/api).
-
 ---
 
 ## Technologies & Tools
